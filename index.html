@@ -9,7 +9,11 @@
 </head>
 <script>
 $(document).ready(function(){
-     $('#jqcarousal').jqcarousal();        
+     $('#jqcarousal').jqcarousal({
+	     direction	: 	"left",
+	     auto		:	false,
+	     speed		: 	5000,
+     });        
 });
 </script>
 <body>
@@ -20,11 +24,11 @@ $(document).ready(function(){
             <li id="1"><a href="#"><img src="images/1.jpg" /></a></li>  
             <li id="2"><a href="#"><img src="images/2.jpg" /></a></li>  
             <li id="3"><a href="#"><img src="images/3.jpg" /></a></li>  
-
-        </ul>  
+			<li id="4"><a href="#"><img src="images/4.jpg" /></a></li>  
+        </ul> 
   </div>  
-  <div id="prev"><</div> 
-  <div id="next">></div>  
+       <div id="prev">prev</div> 
+	   <div id="next">next</div>     
 </div>
 </body>
 </html>

@@ -17,7 +17,7 @@ left:0px; /* important (this should be negative number of list items width(inclu
 list-style-type: none; /* removing the default styling for unordered list items */  
 margin: 0px;  
 padding: 0px;  
-width:9999px; /* important */  
+ /* important */  
 /* non-important styling bellow */  
 padding-bottom:10px;  
 }  
@@ -32,7 +32,8 @@ background: #000000;
 margin-top:10px;  
 margin-bottom:10px;  
 margin-left:5px;  
-margin-right:5px;  
+margin-right:5px; 
+ 
 }  
   
 .jqcarousal li img {  
@@ -41,13 +42,23 @@ cursor:pointer;
 cursor: hand;  
 border:0px;  
 }  
-#left_scroll, #right_scroll{  
+#prev, #next{  
 float:left;  
-height:130px;  
-width:15px;  
-background: #C0C0C0;  
-}  
-#left_scroll img, #right_scroll img{  
+height:20px;  
+width:30px;  
+top:-195px;
+left:20px;
+padding: 5px;
+background: #fff;
+position: relative;
+cursor: pointer;  
+cursor: hand; 
+} 
+#next
+{
+left:600px;
+} 
+#prev img, #next img{  
 /*styling*/  
 cursor: pointer;  
 cursor: hand;  

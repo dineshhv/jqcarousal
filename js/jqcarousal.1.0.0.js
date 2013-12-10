@@ -15,16 +15,18 @@
    {
        var elem = $(element);
        var obj = this;
-
+	   var run;
        // Merge options with defaults
        var settings = $.extend({
           responsive 	   : true,
-          speed            : 2500,
+          delay            : 3000,
           direction        : "left",
           paging           : true,
           buttons		   : true,
           auto			   : true,
-          
+          speed			   : 750,
+          prev			   : "#prev",
+          next 			   : "#next"
           
        }, options || {});
        
@@ -62,8 +64,7 @@
                 jQuery.browser = browser;
                 
        setup(elem, settings, matched.browser);
-      
-      
+       
        
        
        // Public method
@@ -77,42 +78,110 @@
    {
         var id=element.attr('id');  
         $('#'+id).addClass('jqcarousal');
+        var item_Count=$('#'+id).children().length;
+        var itemWidth=$('#'+id+' li').outerWidth(true);
+        var total_width=item_Count*itemWidth;
+       
+        $('#'+id).css('width',total_width);
+        if(options.direction=='right')
+        {
+	        var pos='-'+parseInt(total_width-itemWidth)+'px';
+			$('#'+id).css('left',pos);
+        }
         if(options.auto==true)
         {
-        	var run = setInterval(function() { transit(options,id); }, options.speed);
-        }                         
+        	run = setInterval(function() { transit(options,id,total_width); }, options.delay);
+        	if(options.direction=='right')
+        	{
+	        	var list = $('#'+id);
+				var listItems = list.children('li');
+				list.append(listItems.get().reverse());
+				
+        	}
+        } 
+        
+       $(prev).click(function(e){
+	       e.preventDefault();
+	       prevItem(options,id,total_width);
+       });
+       $(next).click(function(e){
+       	   e.preventDefault();
+	       nextItem(options,id,total_width);
+       });
+        
+                                
    };
   
-   function transit(options,id)
+   function transit(options,id,width)
    {
 	   var item_width = $('#'+id+' li').outerWidth(true); 
 
+	   console.log((options.delay/8));
 	   if(options.direction=='left')
 	   {
 		 	var leftseek = parseInt($('#'+id).css('left')) - item_width;  
 		 	
-		 	$('#'+id).animate({'left' : leftseek}, 200, function () {
+		 	$('#'+id).animate({'left' : leftseek}, (options.delay/8), function () {
             
             $('#'+id+' li:last').after($('#'+id+' li:first'));                     
-
-            $('#'+id).css({'left' : 0});
+			
+            $('#'+id).css({'left' :0});
+           
         
 			});
 	   }
 	   else if(options.direction=='right')
 	   {
-		   var rightseek = parseInt($('#'+id).css('left')) + item_width;  
-		 	
-		 	$('#'+id).animate({'right' : rightseek}, 200, function () {
-            
-            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 
-            $('#'+id).css({'left' : 0});
-        
+		    var r='-'+(item_width*($('#'+id).children().length-1))+'px';
+		    var r2='-'+(item_width*($('#'+id).children().length))+'px';
+		    var rightseek = parseInt($('#'+id).css('left')) + item_width;  
+
+		 	$('#'+id).animate({'left' : rightseek}, (options.delay/8), function () {
+            
+            $('#'+id+' li:first').before($('#'+id+' li:last')); 
+            //$('#'+id+' li:last').after($('#'+id+' li:first'));                     
+
+            $('#'+id).css({'left' : r});
+			
 			});
 	   }  
    }
-  
+   
+   function nextItem(options,id,width)
+   {
+   	   var item_width = $('#'+id+' li').outerWidth(true); 
+	   if(options.direction=='left')
+	   {
+		    var leftseek = parseInt($('#'+id).css('left')) - item_width;
+			console.log(leftseek)
+	        //slide the item
+	        $('#'+id).animate({'left' : leftseek}, (options.delay/8), function () {
+	            
+	            //move the first item and put it as last item
+	            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
+	            
+	            //set the default item to correct position
+	            $('#'+id).css({'left' : 0});
+	        
+	        });
+	   }
+	   else if(options.direction=='right')
+	   {
+		   
+	   }
+   }
+   function prevItem(options,id,width)
+   {
+	   if(options.direction=='left')
+	   {
+		   
+	   }
+	   else
+	   {
+		   
+	   }
+   }
   
    $.fn.jqcarousal = function(options)
    {
