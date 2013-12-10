@@ -150,19 +150,20 @@
    
    function nextItem(options,id,width)
    {
-   	   var item_width = $('#'+id+' li').outerWidth(true); 
+   	   var item_width = $('#'+id+' li').outerWidth(true);
+   	   var left_value = item_width * (-1);
+
 	   if(options.direction=='left')
 	   {
 		    var leftseek = parseInt($('#'+id).css('left')) - item_width;
-			console.log(leftseek)
 	        //slide the item
-	        $('#'+id).animate({'left' : leftseek}, (options.delay/8), function () {
+	        $('#'+id).animate({'left' : leftseek}, (options.delay/15), function () {
 	            
 	            //move the first item and put it as last item
 	            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 	            
 	            //set the default item to correct position
-	            $('#'+id).css({'left' : 0});
+	            $('#'+id).css({'left' : left_value});
 	        
 	        });
 	   }
@@ -173,9 +174,19 @@
    }
    function prevItem(options,id,width)
    {
+	   var item_width = $('#'+id+' li').outerWidth(true);
+   	   var left_value = item_width * (-1);
 	   if(options.direction=='left')
 	   {
-		   
+		    var left_indent = parseInt($('#'+id).css('left')) + item_width;
+	        //slide the item            
+	        $('#'+id).animate({'left' : left_indent}, (options.delay/15),function(){    
+	            //move the last item and put it as first item                
+	            $('#'+id+' li:first').before($('#'+id+' li:last'));           
+	            //set the default item to correct position
+	            $('#'+id).css({'left' : left_value});
+	        
+	        });
 	   }
 	   else
 	   {
