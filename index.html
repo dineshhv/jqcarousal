@@ -10,10 +10,12 @@
 <script>
 $(document).ready(function(){
      $('#jqcarousal').jqcarousal({
-	     direction	: 	"right",
+	     direction	: 	"left",
 	     auto		:	true,
-	     speed		: 	1000,
+	     speed		: 	200,
 	     circular	:   true,
+	     pager		:  "#pager",
+	     pagetype	:  "dot"
      });        
 });
 </script>
@@ -22,14 +24,16 @@ $(document).ready(function(){
   
   <div id="wrapper">  
         <ul id="jqcarousal">  
-            <li id="1"><a href="#"><img src="images/1.jpg" /></a></li>  
-            <li id="2"><a href="#"><img src="images/2.jpg" /></a></li>  
-            <li id="3"><a href="#"><img src="images/3.jpg" /></a></li>  
-			<li id="4"><a href="#"><img src="images/4.jpg" /></a></li>  
-        </ul> 
+            <li id="1"  class="red box"> <div class="icon"><img src="images/num1.png"></div></li>  
+            <li id="2"  class="blue box"><div class="icon"><img src="images/num2.png"></div></li>  
+            <li id="3"  class="green box"><div class="icon"><img src="images/num3.png"></div></li>  
+			<li id="4"  class="yellow box"><div class="icon"><img src="images/num4.png"></div></li>  
+        </ul>  
+        <div id="prev">prev</div> 
+  <div id="next">next</div>
+  <div id="pager"></div>
   </div>  
-       <div id="prev">prev</div> 
-	   <div id="next">next</div>     
+       
 </div>
 </body>
 </html>

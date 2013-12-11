@@ -15,13 +15,7 @@
    {
        var elem = $(element);
        var obj = this;
-	   var run;
-	   var itemWidth;
-	   var id;
-	   var item_Count;
-	   var total_width;
-	   var left_value;
-	   var pos;
+	   var run, itemWidth, id, item_Count, left_value, pos;
        // Merge options with defaults
        var settings = $.extend({
           responsive 	   : true,
@@ -35,6 +29,8 @@
           next 			   : "#next",
           circular		   : false,
           repeat		   : true,
+          pager			   : "",
+          pagetype		   : "none",
           
           
        }, options || {});
@@ -75,7 +71,7 @@
        setup();
 
        function setup() {
-
+		   console.log(settings.delay);
 	        id=elem.attr('id');  
 	        $('#'+id).addClass('jqcarousal');
 	        item_Count=$('#'+id).children().length;
@@ -83,7 +79,10 @@
 	        total_width=item_Count*itemWidth;
 	        left_value = itemWidth * (-1);
 	        $('#'+id).css('width',total_width);
-	        
+	        for(i=0;i<item_Count;i++)
+	        {
+		        $(settings.pager).append('<a href="" id='+(i+1)+'>'+(i+1)+'</a>');
+	        }
 	        if(settings.direction=='left')
 	        {
 		       $('#'+id).css('left',left_value); 
@@ -111,20 +110,26 @@
 			        }
 			   );
 	        } 
-
+		  
 	       $(settings.prev).click(function(e){
 		       e.preventDefault();
+		      
 		       prevItem();
+
 	       });
 	       $(settings.next).click(function(e){
 	       	   e.preventDefault();
 		       nextItem();
-	       });
 
+	       });
+		   $(settings.pager).children().click(function(e){
+		   		e.preventDefault();
+			   console.log($(this).attr('id'));
+		   });
        }
        function transit()
 	   {
-		   
+		  
 		   if(settings.circular==true)
 		   {
 			  if(settings.repeat==true)
@@ -132,20 +137,23 @@
 				   
 				   var left_value = itemWidth * (-1);
 				   if(settings.direction=='left')
-				   {
+				   {	
 					 	var leftseek = parseInt($('#'+id).css('left')) - itemWidth;  
-					 	$('#'+id).animate({'left' : leftseek}, (settings.delay/8), function () {
+					 	$('#'+id).animate({'left' : leftseek}, settings.speed, function () {
 			            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 						$('#'+id).css({'left' :left_value});
+						
 			            });
 				   }
 				   else if(settings.direction=='right')
 				   {
+					    
 					    var r='-'+(itemWidth*($('#'+id).children().length-2))+'px';
 					    var rightseek = parseInt($('#'+id).css('left')) + itemWidth;  
-						$('#'+id).animate({'left' : rightseek}, (settings.delay/8), function () {
+						$('#'+id).animate({'left' : rightseek}, settings.speed, function () {
 			            $('#'+id+' li:first').before($('#'+id+' li:last')); 
 			            $('#'+id).css({'left' : r});
+			            
 						});
 				   } 
 				   
@@ -163,59 +171,96 @@
 	   
 	   function nextItem()
 	   {
-		   
+		  
+		   $(settings.next).off('click');
 	   	   var itemWidth = $('#'+id+' li').outerWidth(true);
 	   	   var left_value = itemWidth * (-1);
 	
 		   if(settings.direction=='left')
 		   {
 			    
+
 			    var leftseek = parseInt($('#'+id).css('left')) - itemWidth;
-		        //slide the item
-		        $('#'+id).animate({'left' : leftseek}, settings.speed/15, function () {
+		        
+		        $('#'+id).animate({'left' : leftseek}, settings.speed, function () {
 		            
-		            //move the first item and put it as last item
+		            
 		            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 		            
-		            //set the default item to correct position
 		            $('#'+id).css({'left' : left_value});
+		            
+		            $(settings.next).click(function(e){
+			       	   e.preventDefault();
+				       nextItem();
+					});
 					
 		        });
+		        
 		       
 		   }
 		   else if(settings.direction=='right')
 		   {
+
+
 			   var r='-'+(itemWidth*($('#'+id).children().length-2))+'px';
+			   
 			   var leftseek = parseInt($('#'+id).css('left')) - itemWidth;  
-			   $('#'+id).animate({'left' : leftseek}, (settings.delay/8), function () {
-			    $('#'+id+' li:last').after($('#'+id+' li:first'));                     
-				$('#'+id).css({'left' :r});
+			   
+			   $('#'+id).animate({'left' : leftseek}, settings.speed, function () {
+			   
+				    $('#'+id+' li:last').after($('#'+id+' li:first'));                     
+					
+					$('#'+id).css({'left' :r});
+					
+					$(settings.next).click(function(e){
+			       	   e.preventDefault();
+				       nextItem();
+					});
+					
 			   });
 		   }
 	   }
 	   function prevItem()
 	   {
+		   
+		   $(settings.prev).off('click');
 		   var itemWidth = $('#'+id+' li').outerWidth(true);
 	   	   var left_value = itemWidth * (-1);
 		   if(settings.direction=='left')
 		   {
+
 			    var left_indent = parseInt($('#'+id).css('left')) + itemWidth;
-		        //slide the item            
-		        $('#'+id).animate({'left' : left_indent}, settings.speed/15,function(){    
-		            //move the last item and put it as first item                
-		            $('#'+id+' li:first').before($('#'+id+' li:last'));           
-		            //set the default item to correct position
-		            $('#'+id).css({'left' : left_value});
 		        
+		        $('#'+id).animate({'left' : left_indent}, settings.speed,function(){    
+		            
+		            $('#'+id+' li:first').before($('#'+id+' li:last'));           
+		            
+		            $('#'+id).css({'left' : left_value});
+					
+					$(settings.prev).click(function(e){
+			       	   e.preventDefault();
+				       prevItem();
+					});
+		       					
 		        });
 		   }
 		   else
 		   {
+			   
 			   var r='-'+(itemWidth*($('#'+id).children().length-2))+'px';
 			   var rightseek = parseInt($('#'+id).css('left')) + itemWidth;  
-			   $('#'+id).animate({'left' : rightseek}, (settings.delay/8), function () {
+			   
+			   $('#'+id).animate({'left' : rightseek}, settings.speed, function () {
+			      
 			      $('#'+id+' li:first').before($('#'+id+' li:last')); 
+			      
 			      $('#'+id).css({'left' : r});
+				  
+				  $(settings.prev).click(function(e){
+			       	   e.preventDefault();
+				       prevItem();
+				  });
+				  
 			   });
 		   }
 	   }
