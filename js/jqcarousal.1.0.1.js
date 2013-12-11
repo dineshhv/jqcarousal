@@ -113,12 +113,16 @@
 		  
 	       $(settings.prev).click(function(e){
 		       e.preventDefault();
+		       clearInterval(run);
 		       prevItem();
+		       run = setInterval(function() { transit(); }, settings.delay);
 
 	       });
 	       $(settings.next).click(function(e){
 	       	   e.preventDefault();
+	       	   clearInterval(run);
 		       nextItem();
+		       run = setInterval(function() { transit(); }, settings.delay);
 
 	       });
 		   $(settings.pager).children().click(function(e){
@@ -135,21 +139,26 @@
 			  {
 				   
 				   var left_value = itemWidth * (-1);
+				   
 				   if(settings.direction=='left')
 				   {	
-					 	var leftseek = parseInt($('#'+id).css('left')) - itemWidth;  
-					 	$('#'+id).animate({'left' : leftseek}, settings.speed, function () {
+				   		
+					 	var seek = parseInt($('#'+id).css('left')) - itemWidth; 
+
+					 	$('#'+id).animate({'left' : seek}, settings.delay, function () {
 			            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 						$('#'+id).css({'left' :left_value});
+
 						
 			            });
 				   }
 				   else if(settings.direction=='right')
 				   {
-					    
+					   
+					   
 					    var r='-'+(itemWidth*($('#'+id).children().length-2))+'px';
-					    var rightseek = parseInt($('#'+id).css('left')) + itemWidth;  
-						$('#'+id).animate({'left' : rightseek}, settings.speed, function () {
+					    var seek = parseInt($('#'+id).css('left')) + itemWidth;  
+						$('#'+id).animate({'left' : seek}, settings.delay, function () {
 			            $('#'+id+' li:first').before($('#'+id+' li:last')); 
 			            $('#'+id).css({'left' : r});
 			            
