@@ -26,7 +26,8 @@
           auto			   : true,
           speed			   : 750,
           prev			   : "#prev",
-          next 			   : "#next"
+          next 			   : "#next",
+          circular		   : "false",
           
        }, options || {});
        
@@ -63,9 +64,7 @@
                 
                 jQuery.browser = browser;
                 
-       setup(elem, settings, matched.browser);
-       
-       
+       setup(elem, settings, matched.browser, run);
        
        // Public method
        this.addhighlight = function()
@@ -74,7 +73,7 @@
        };
    };
 
-   function setup(element, options, browser) 
+   function setup(element, options, browser, run) 
    {
         var id=element.attr('id');  
         $('#'+id).addClass('jqcarousal');
@@ -98,8 +97,17 @@
 				list.append(listItems.get().reverse());
 				
         	}
+        	$('#'+id).hover(
+	        
+		       function() {
+		            clearInterval(run);
+		        }, 
+		        function() {
+		            run = setInterval(function() { transit(options,id,total_width); }, options.delay);  
+		        }
+		   );
         } 
-        
+         
        $(prev).click(function(e){
 	       e.preventDefault();
 	       prevItem(options,id,total_width);
@@ -115,7 +123,7 @@
    function transit(options,id,width)
    {
 	   var item_width = $('#'+id+' li').outerWidth(true); 
-
+	   var left_value = item_width * (-1);
 	   console.log((options.delay/8));
 	   if(options.direction=='left')
 	   {
@@ -125,7 +133,7 @@
             
             $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 			
-            $('#'+id).css({'left' :0});
+            $('#'+id).css({'left' :left_value});
            
         
 			});
@@ -142,7 +150,7 @@
             $('#'+id+' li:first').before($('#'+id+' li:last')); 
             //$('#'+id+' li:last').after($('#'+id+' li:first'));                     
 
-            $('#'+id).css({'left' : r});
+            $('#'+id).css({'left' : left_value});
 			
 			});
 	   }  
