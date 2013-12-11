@@ -15,7 +15,7 @@
    {
        var elem = $(element);
        var obj = this;
-	   var run, itemWidth, id, item_Count, left_value, pos;
+	   var run, itemWidth, id, item_Count, left_value, pos, pagerid;
        // Merge options with defaults
        var settings = $.extend({
           responsive 	   : true,
@@ -113,7 +113,6 @@
 		  
 	       $(settings.prev).click(function(e){
 		       e.preventDefault();
-		      
 		       prevItem();
 
 	       });
@@ -124,7 +123,7 @@
 	       });
 		   $(settings.pager).children().click(function(e){
 		   		e.preventDefault();
-			   console.log($(this).attr('id'));
+			   pagerid=$(this).attr('id');
 		   });
        }
        function transit()

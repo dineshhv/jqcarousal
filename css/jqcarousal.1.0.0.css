@@ -47,7 +47,7 @@ border:0px;
 #prev, #next{  
 float:left;  
 height:20px;  
-width:30px;  
+width:40px;  
 top:-195px;
 left:20px;
 padding: 5px;
@@ -55,10 +55,11 @@ background: #fff;
 position: relative;
 cursor: pointer;  
 cursor: hand; 
+text-align: center;
 } 
 #next
 {
-left:600px;
+left:590px;
 } 
 #prev img, #next img{  
 /*styling*/  
