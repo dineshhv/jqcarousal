@@ -79,24 +79,36 @@
 	        total_width=item_Count*itemWidth;
 	        left_value = itemWidth * (-1);
 	        $('#'+id).css('width',total_width);
-	        for(i=0;i<item_Count;i++)
+	        if(item_Count>1)
 	        {
-		        $(settings.pager).append('<a href="" id='+(i+1)+'>'+(i+1)+'</a>');
-	        }
-	        if(settings.direction=='left')
-	        {
-		       $('#'+id).css('left',left_value); 
-		       $('#'+id+' li:first').before($('#'+id+' li:last'));  
-	        }
-	        else if(settings.direction=='right')
-	        {
-		        var list = $('#'+id);
-				var listItems = list.children('li');
-				list.append(listItems.get().reverse());
-		        pos='-'+parseInt(total_width+(itemWidth*(-2)))+'px';
-		        $('#'+id+' li:last').after($('#'+id+' li:first'));  
-				$('#'+id).css('left',pos);
-	        }
+		        for(i=0;i<item_Count;i++)
+		        {
+			        $(settings.pager).append('<a href="" id='+(i+1)+'>'+(i+1)+'</a>');
+			        $('#'+id).data('flow','left');
+		        }
+		        if(settings.direction=='left')
+		        {
+			       $('#'+id).css('left',left_value); 
+			       $('#'+id+' li:first').before($('#'+id+' li:last'));  
+		        }
+	        
+		        else if(settings.direction=='right')
+		        {
+			        var list = $('#'+id);
+					var listItems = list.children('li');
+					list.append(listItems.get().reverse());
+			        pos='-'+parseInt(total_width+(itemWidth*(-2)))+'px';
+			        $('#'+id+' li:last').after($('#'+id+' li:first'));  
+					$('#'+id).css('left',pos);
+		        }
+		        
+				if(item_Count<=2)
+				{
+					var listme = $('#'+id);
+					var repeatItem = listme.children();
+					$('#'+id).append(repeatItem.get());
+					listme.append(repeatItem.get());
+				}
 	        if(settings.auto==true)
 	        {
 	        	run = setInterval(transit, settings.delay);
@@ -112,24 +124,36 @@
 			   );
 	        } 
 		  
-	       $(settings.prev).click(function(e){
-		       e.preventDefault();
-		      // clearInterval(run);
-		       prevItem();
-		       //run = setInterval(function() { transit(); }, settings.delay);
-
-	       });
-	       $(settings.next).click(function(e){
-	       	   e.preventDefault();
-	       	  // clearInterval(run);
-		       nextItem();
-		       //run = setInterval(function() { transit(); }, settings.delay);
-
-	       });
-		   $(settings.pager).children().click(function(e){
-		   		e.preventDefault();
-			    pagerid=$(this).attr('id');
-		   });
+		       $(settings.prev).click(function(e){
+			       e.preventDefault();
+			      // clearInterval(run);
+			       prevItem();
+			       //run = setInterval(function() { transit(); }, settings.delay);
+	
+		       });
+		       $(settings.next).click(function(e){
+		       	   e.preventDefault();
+		       	  // clearInterval(run);
+			       nextItem();
+			       //run = setInterval(function() { transit(); }, settings.delay);
+	
+		       });
+			   $(settings.pager).children().click(function(e){
+			   		e.preventDefault();
+			   		clearInterval(run);
+				    pagerid=$(this).attr('id');
+				    console.log(pagerid);
+				    $('#'+id).children().each(function(){
+					   console.log($(this).attr('id'));
+				    });
+			   });
+		   }
+		   else
+		   {
+			   $(settings.prev).hide();
+			   $(settings.next).hide();
+			   $(settings.pager).hide();
+		   }
        }
        function transit()
 	   {
