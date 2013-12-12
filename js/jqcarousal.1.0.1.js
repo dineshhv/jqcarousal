@@ -99,7 +99,8 @@
 	        }
 	        if(settings.auto==true)
 	        {
-	        	run = setInterval(function() { transit(); }, settings.delay);
+	        	run = setInterval(transit, settings.delay);
+	        	
 	        	$('#'+id).hover(
 		        
 			       function() {
@@ -113,21 +114,21 @@
 		  
 	       $(settings.prev).click(function(e){
 		       e.preventDefault();
-		       clearInterval(run);
+		      // clearInterval(run);
 		       prevItem();
-		       run = setInterval(function() { transit(); }, settings.delay);
+		       //run = setInterval(function() { transit(); }, settings.delay);
 
 	       });
 	       $(settings.next).click(function(e){
 	       	   e.preventDefault();
-	       	   clearInterval(run);
+	       	  // clearInterval(run);
 		       nextItem();
-		       run = setInterval(function() { transit(); }, settings.delay);
+		       //run = setInterval(function() { transit(); }, settings.delay);
 
 	       });
 		   $(settings.pager).children().click(function(e){
 		   		e.preventDefault();
-			   pagerid=$(this).attr('id');
+			    pagerid=$(this).attr('id');
 		   });
        }
        function transit()
@@ -138,14 +139,12 @@
 			  if(settings.repeat==true)
 			  {
 				   
-				   var left_value = itemWidth * (-1);
-				   
 				   if(settings.direction=='left')
 				   {	
-				   		
-					 	var seek = parseInt($('#'+id).css('left')) - itemWidth; 
+				   		var left_value = itemWidth * (-1);
+					 	var seek = itemWidth*2*(-1); 
 
-					 	$('#'+id).animate({'left' : seek}, settings.delay, function () {
+					    $('#'+id).animate({'left' : seek}, settings.speed, function () {
 			            $('#'+id+' li:last').after($('#'+id+' li:first'));                     
 						$('#'+id).css({'left' :left_value});
 
@@ -156,9 +155,10 @@
 				   {
 					   
 					   
-					    var r='-'+(itemWidth*($('#'+id).children().length-2))+'px';
-					    var seek = parseInt($('#'+id).css('left')) + itemWidth;  
-						$('#'+id).animate({'left' : seek}, settings.delay, function () {
+					    var r=itemWidth*($('#'+id).children().length-2)*(-1);
+					    var seek = parseInt($('#'+id).css('left'))+itemWidth;
+					    console.log(seek);  
+						$('#'+id).animate({'left' : seek}, settings.speed, function () {
 			            $('#'+id+' li:first').before($('#'+id+' li:last')); 
 			            $('#'+id).css({'left' : r});
 			            
